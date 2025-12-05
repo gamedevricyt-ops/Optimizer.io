@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ OPTIMIZER - Sistema de Otimização Avançada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0A0E27 0%, #1A1F3A 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════════════════════ */
+        /* TELA DE LOGIN */
+        /* ═══════════════════════════════════════════════════════════ */
+
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00E5FF;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
+            50% { text-shadow: 0 0 30px rgba(0, 229, 255, 0.8); }
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #7F8C8D;
+            margin-bottom: 60px;
+        }
+
+        .login-box {
+            background: rgba(26, 31, 58, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(10, 14, 39, 0.8);
+            border: 2px solid #1A1F3A;
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #00E5FF;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%);
+            border: none;
+            border-radius: 10px;
+            color: #000000;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════════════════════ */
+        /* TELA PRINCIPAL */
+        /* ═══════════════════════════════════════════════════════════ */
+
+        #main-screen {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: rgba(26, 31, 58, 0.8);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00E5FF;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00FF00;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .tabs {
+            display: flex;
+            background: rgba(15, 20, 36, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(26, 31, 58, 0.8);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: rgba(26, 31, 58, 1);
+        }
+
+        .tab.active {
+            background: rgba(0, 229, 255, 0.2);
+            border-bottom-color: #00E5FF;
+            color: #00E5FF;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: #00E5FF;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .section-desc {
+            color: #7F8C8D;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(26, 31, 58, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #00E5FF;
+            box-shadow: 0 10px 30px rgba(0, 229, 255, 0.2);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-desc {
+            color: #7F8C8D;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(0, 229, 255, 0.2);
+            color: #00E5FF;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .info-text {
+            line-height: 1.8;
+            color: #7F8C8D;
+        }
+
+        /* Notificação Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00E5FF 0%, #00B8D4 100%);
+            color: #000000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(0, 229, 255, 0.4);
+            animation: slideInRight 0.3s ease-out;
+            z-index: 1000;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .logo { font-size: 36px; }
+            .header-title { font-size: 20px; }
+            .tab { font-size: 14px; padding: 15px 10px; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- TELA DE LOGIN -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+
+    <div id="login-screen">
+        <div class="logo">⚡ OPTIMIZER</div>
+        <div class="subtitle">Sistema de Otimização Avançada</div>
+        
+        <div class="login-box">
+            <div class="input-group">
+                <input type="password" id="senha" placeholder="Digite a senha" />
+            </div>
+            <button class="btn-login" onclick="login()">🔓 ENTRAR</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!-- TELA PRINCIPAL -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+
+    <div id="main-screen">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-title">⚡ OPTIMIZER</div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Ativo</span>
+            </div>
+        </div>
+
+        <!-- ABAS -->
+        <div class="tabs">
+            <div class="tab active" onclick="changeTab(0)">🎯 Controle</div>
+            <div class="tab" onclick="changeTab(1)">🛡️ ESP</div>
+            <div class="tab" onclick="changeTab(2)">ℹ️ Info</div>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="content">
+            <!-- ABA CONTROLE -->
+            <div class="tab-content active" id="tab-0">
+                <div class="section-title">Controle de Mira</div>
+                <div class="section-desc">Configure os recursos de precisão e estabilidade</div>
+
+                <div class="card" onclick="ativar('Controle de Recoil')">
+                    <div class="card-title">
+                        🎯 Controle de Recoil
+                        <span class="badge">Inteligente</span>
+                    </div>
+                    <div class="card-desc">Reduz o recuo da arma</div>
+                </div>
+
+                <div class="card" onclick="ativar('Foco Direcionado')">
+                    <div class="card-title">
+                        🛡️ Foco Direcionado
+                        <span class="badge">Avançado</span>
+                    </div>
+                    <div class="card-desc">Melhora o rastreamento</div>
+                </div>
+
+                <div class="card" onclick="ativar('Precisão Absoluta')">
+                    <div class="card-title">
+                        🔫 Precisão Absoluta
+                        <span class="badge">Premium</span>
+                    </div>
+                    <div class="card-desc">Máxima exatidão</div>
+                </div>
+            </div>
+
+            <!-- ABA ESP -->
+            <div class="tab-content" id="tab-1">
+                <div class="section-title">Ferramentas ESP</div>
+                <div class="section-desc">Recursos adicionais de otimização</div>
+
+                <div class="card" onclick="ativar('Auxílio 90%')">
+                    <div class="card-title">
+                        ⚡ Auxílio 90%
+                        <span class="badge">Pro</span>
+                    </div>
+                    <div class="card-desc">Sistema de auxílio avançado</div>
+                </div>
+
+                <div class="card" onclick="ativar('Limpar Cache')">
+                    <div class="card-title">
+                        🗑️ Limpar Cache
+                        <span class="badge">Padrão</span>
+                    </div>
+                    <div class="card-desc">Remove logs e temporários</div>
+                </div>
+
+                <div class="card" onclick="ativar('Touch Optimizer')">
+                    <div class="card-title">
+                        👆 Touch Optimizer
+                        <span class="badge">Premium</span>
+                    </div>
+                    <div class="card-desc">Otimiza sensibilidade touch</div>
+                </div>
+            </div>
+
+            <!-- ABA INFO -->
+            <div class="tab-content" id="tab-2">
+                <div class="section-title">Informações</div>
+                
+                <div class="card">
+                    <div class="info-text">
+                        <strong style="color: #00E5FF;">💎 OPTIMIZER v2.0</strong><br><br>
+                        
+                        ⚡ Sistema de otimização avançada<br>
+                        🎯 Controle de mira inteligente<br>
+                        🛡️ Proteção contra detecção<br>
+                        🔧 Ajustes personalizados<br><br>
+                        
+                        📊 <strong>Códigos HEX carregados:</strong> 1200+<br>
+                        🔐 <strong>Sistema de autenticação:</strong> Ativo<br>
+                        🚀 <strong>Performance:</strong> Máxima<br><br>
+                        
+                        <strong style="color: #00E5FF;">Desenvolvido para performance máxima</strong>
+                    </div>
+                </div>
+
+                <div class="card" onclick="mostrarCodigos()">
+                    <div class="card-title">
+                        📋 Ver Códigos HEX
+                        <span class="badge">1200+</span>
+                    </div>
+                    <div class="card-desc">Visualizar códigos carregados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════
+        // CÓDIGOS HEX
+        // ═══════════════════════════════════════════════════════════
+        
+        const codigoAuxilio = "77EFBFBD017FEFBFBDEFBFBDEFBFBD21EFBFBDEFBFBD216801";
+        const codigoOutros = "77EFBFBD017FEFBFBDEFBFBDEFBFBD21EFBFBDEFBFBD216801";
+        
+        // Senhas válidas
+        const senhasValidas = ["optimizer", "admin", "2025", "auxilio"];
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE LOGIN
+        // ═══════════════════════════════════════════════════════════
+        
+        function login() {
+            const senha = document.getElementById('senha').value.trim();
+            
+            if (senha === '') {
+                showToast('⚠️ Digite a senha', 'warning');
+                return;
+            }
+            
+            if (senhasValidas.includes(senha)) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-screen').style.display = 'block';
+                showToast('✅ OPTIMIZER ATIVADO!', 'success');
+                inicializarSistema();
+            } else {
+                showToast('❌ SENHA INCORRETA', 'error');
+                document.getElementById('senha').value = '';
+            }
+        }
+
+        // Enter para login
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('senha').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE MUDAR ABAS
+        // ═══════════════════════════════════════════════════════════
+        
+        function changeTab(index) {
+            // Remove active de todas as abas
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Ativa a aba selecionada
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE ATIVAR RECURSOS
+        // ═══════════════════════════════════════════════════════════
+        
+        function ativar(recurso) {
+            showToast(`✅ ${recurso.toUpperCase()} ATIVADO!`, 'success');
+            
+            // Salvar no localStorage
+            const timestamp = new Date().toISOString();
+            localStorage.setItem(`optimizer_${recurso}`, timestamp);
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE INICIALIZAR SISTEMA
+        // ═══════════════════════════════════════════════════════════
+        
+        function inicializarSistema() {
+            // Salvar códigos HEX no localStorage
+            localStorage.setItem('optimizer_codigo_auxilio', codigoAuxilio);
+            localStorage.setItem('optimizer_codigo_outros', codigoOutros);
+            localStorage.setItem('optimizer_inicializado', new Date().toISOString());
+            
+            // Gerar 1200 códigos HEX
+            for (let i = 1; i <= 1200; i++) {
+                localStorage.setItem(`optimizer_hex_${i}`, `ULTRA_${i}_${codigoAuxilio.substring(0, 20)}`);
+            }
+            
+            setTimeout(() => {
+                showToast('✅ Sistema inicializado com 1200 códigos!', 'success');
+            }, 1000);
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE MOSTRAR CÓDIGOS
+        // ═══════════════════════════════════════════════════════════
+        
+        function mostrarCodigos() {
+            const codigoAuxilio = localStorage.getItem('optimizer_codigo_auxilio');
+            const codigoOutros = localStorage.getItem('optimizer_codigo_outros');
+            
+            let mensagem = `📋 CÓDIGOS CARREGADOS:\n\n`;
+            mensagem += `🔹 Código Auxílio:\n${codigoAuxilio}\n\n`;
+            mensagem += `🔹 Código Outros:\n${codigoOutros}\n\n`;
+            mensagem += `✅ Total de códigos HEX: 1200+`;
+            
+            alert(mensagem);
+            showToast('📋 Códigos exibidos!', 'info');
+        }
+
+        // ═══════════════════════════════════════════════════════════
+        // FUNÇÃO DE NOTIFICAÇÃO TOAST
+        // ═══════════════════════════════════════════════════════════
+        
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            
+            if (type === 'error') {
+                toast.style.background = 'linear-gradient(135deg, #FF3838 0%, #FF1744 100%)';
+                toast.style.color = '#FFFFFF';
+            } else if (type === 'warning') {
+                toast.style.background = 'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)';
+                toast.style.color = '#000000';
+            } else if (type === 'info') {
+                toast.style.background = 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)';
+                toast.style.color = '#FFFFFF';
+            }
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+
+</body>
+  </html>
